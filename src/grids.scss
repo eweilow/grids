@@ -1,0 +1,253 @@
+/*
+    grids
+    Copyright (C) 2015  Erik Weilow
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+
+$breakpoints: (
+  (0px  ,  380px,  "xs", 4,  8px, false),
+  (381px,  479px,  "xs", 4,  16px, false),
+  (480px,  599px,  "s",  8,  16px, false),
+  (600px,  839px,  "s",  8,  24px, true, 600px, 16px),
+  (840px,  959px,  "m",  12, 24px, true, 600px, 16px),
+  (1280px, 1439px, "m",  12, 24px, false),
+  (1440px, 1919px, "l",  12, 24px, false),
+  (1920px, -1,     "xl", 12, 24px, false)
+) !default;
+
+$xs-only: "only screen and (max-width : 479px)" !default;
+$s-and-down: "only screen and (max-width : 839px)" !default;
+$m-and-down: "only screen and (max-width : 1439px)" !default;
+$l-and-down: "only screen and (max-width : 1919px)" !default;
+
+$s-and-up: "only screen and (min-width : 480px)" !default;
+$m-and-up: "only screen and (min-width : 840px)" !default;
+$l-and-up: "only screen and (min-width : 1280px)" !default;
+
+
+$hides: (
+  (-1px, 479px, "xs"),
+  (480px, 839px, "s"),
+  (840px, 1439px, "m"),
+  (1440px, 1919px, "l"),
+  (1920, -1px, "xl")
+) !default;
+
+$max-cols: 12 !default;
+
+@mixin box-sizing($type: border-box) {
+  box-sizing: $type;
+}
+
+.row {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+.col {
+  float: left;
+  @include box-sizing(border-box);
+}
+
+@mixin cols($prefix, $columns, $gutter) {
+  .row {
+    margin-left: (-1 * $gutter / 2);
+    margin-right: (-1 * $gutter / 2);
+    padding: 0 $gutter / 2;
+    
+    &.no-gutter {
+      padding: 0 !important;
+      @include box-sizing(border-box);
+      width: 100%;
+    }
+    &.with-gutter {
+      margin-left: 0;
+      margin-right: 0;
+      padding-left:  $gutter / 2 !important;
+      padding-right: $gutter / 2 !important;
+      @include box-sizing(border-box);
+    }
+  }
+  .primary-row {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left:  $gutter / 2 !important;
+    padding-right: $gutter / 2 !important;
+    @include box-sizing(border-box);
+  }
+  
+  .col {
+    padding: 0 $gutter / 2;
+    
+    $i: 1;
+    @while $i <= $columns {
+      $perc: unquote(min(100 / ($columns / $i), 100) + "%");
+      &.#{$prefix}#{$i} {
+        width: $perc;
+        margin-left: 0;
+        &.center-#{$prefix}, &.center-all {
+          $perc2: unquote(min((100 - 100 / ($columns / $i)) / 2, 100) + "%");
+          margin-left: $perc2;
+        }
+      }
+      $i: $i + 1;
+    }
+    $i: 1;
+    @while $i <= $columns {
+      $perc: unquote(min((100 / ($columns / $i)), 100) + "%");
+      &.offset-#{$prefix}#{$i} {
+        margin-left: $perc;
+        &.right {
+          margin-left: 0;
+          margin-right: $perc;
+        }
+      }
+      $i: $i + 1;
+    }
+  }
+}
+
+@mixin single($prefix) {
+  .hide-on-#{$prefix} {
+    display: none !important;
+  }
+}
+@each $min, $max, $prefix in $hides {
+  @if $min < 0 {
+    @media only screen and (min-width: 0px) and (max-width: $max) {
+      .hide-on-#{$prefix} { display: none !important; }
+    }
+      .hide-on-#{$prefix}-and-up { display: none !important; }
+    @media only screen and (max-width: $max) {
+      .hide-on-#{$prefix}-and-down { display: none !important; }
+    }
+    @media only screen and (min-width: $max + 1px) {
+      .only-on-#{$prefix} { display: none !important; }
+    }
+  } @else if $max < 0 {
+    @media only screen and (min-width: $min) {
+      .hide-on-#{$prefix} { display: none !important; }
+    }
+    .hide-on-#{$prefix}-and-down { display: none !important; }
+    @media only screen and (min-width: $min) {
+      .hide-on-#{$prefix}-and-up { display: none !important; }
+    }
+    @media only screen and (max-width: $min - 1px) {
+      .only-on-#{$prefix} { display: none !important; }
+    }
+  } @else {
+    @media only screen and (min-width: $min) and (max-width: $max) {
+      .hide-on-#{$prefix} { display: none !important; }
+    }
+    @media only screen and (max-width: $max) {
+      .hide-on-#{$prefix}-and-down { display: none !important; }
+    }
+    @media only screen and (min-width: $min) {
+      .hide-on-#{$prefix}-and-up { display: none !important; }
+    }
+    @media only screen and (max-width: $min - 1px), only screen and (min-width: $max + 1px) {
+      .only-on-#{$prefix} { display: none !important; }
+    }
+  }
+}
+
+@each $min, $max, $prefix, $columns, $gutter, $possible, $breakpoint, $possiblemin in $breakpoints {
+  @media only screen and (min-width: $min) {
+    @include cols($prefix, $columns, $gutter);
+  }
+  @if $possible {
+    @media only screen and (max-device-width: $breakpoint) and (min-width: $min) {
+      @include cols($prefix, $columns, $possiblemin);
+    }
+  }
+}
+
+.col.no-gutter {
+  padding: 0;
+}
+
+
+$directions: ('top', 'bottom', 'left', 'right');
+$types: ("margin", "padding");
+$sizes: (1,2,3,4);
+
+@mixin helpers($gutter, $prefix) {
+  @each $type in $types {
+    @each $i in $sizes {
+      $size: $i * $gutter;
+      @if($prefix != "") {
+        .#{$prefix}#{$type}-#{$i} { #{$type}: #{$size} !important; }
+      }
+      .#{$type}-#{$i} { #{$type}: #{$size} !important; }
+    }
+  }
+  @each $type in $types {
+    .#{$prefix}no-#{$type} { #{$type}: 0 !important; }
+  }
+  @each $type in $types {
+    @each $i in $sizes {
+      $size: $i * $gutter;
+      @each $dir in $directions {
+        @if($prefix != "") {
+          .#{$prefix}#{$type}-#{$i}-#{$dir} { #{$type}-#{$dir}: #{$size} !important; }
+        }
+        .#{$type}-#{$i}-#{$dir} { #{$type}-#{$dir}: #{$size} !important; }
+      }
+    }
+  }
+  @each $type in $types {
+    @each $dir in $directions {
+      .#{$prefix}no-#{$type}-#{$dir} { #{$type}-#{$dir}: 0 !important; }
+    }
+  }
+  .with-gutter {
+    padding-left: $gutter;
+    padding-right: $gutter;
+  }
+}
+
+@mixin floats($prefix) {
+  .#{$prefix}left { float: left !important; }
+  .#{$prefix}right { float: right !important; }
+}
+
+@each $type in $types {
+  @each $dir in $directions {
+    .no-#{$type}-#{$dir} { #{$type}-#{$dir}: 0 !important; }
+  }
+  .no-#{$type} { #{$type}: 0 !important; }
+}
+
+@each $min, $max, $prefix, $columns, $gutter, $possible, $breakpoint, $possiblemin  in $breakpoints {
+  //@include helpers($gutter, "");
+  @include floats("");
+  @media only screen and (min-width: $min) {
+    @include helpers($gutter, $prefix + "-");
+    @include floats($prefix + "-");
+  }
+  @if $possible {
+    @media only screen and (max-device-width: $breakpoint) and (min-width: $min) {
+      @include helpers($possiblemin, $prefix + "-");
+      @include floats($prefix + "-");
+    }
+  }
+}
