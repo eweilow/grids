@@ -78,40 +78,38 @@
 }
 
 @mixin hide($min, $max, $prefix) {
-  @if $min <= 0 {
-    @media only screen and (min-width: 0px) and (max-width: $max) {
-      .hide-on-#{$prefix} { display: none !important; }
-    }
+  @media only screen {
+    @if $min <= 0 {
+      @media (max-width: $max) {
+        .hide-on-#{$prefix} { display: none !important; }
+      }
       .hide-on-#{$prefix}-and-up { display: none !important; }
-    @media only screen and (max-width: $max) {
       .hide-on-#{$prefix}-and-down { display: none !important; }
-    }
-    @media only screen and (min-width: $max + 1px) {
-      .only-on-#{$prefix} { display: none !important; }
-    }
-  } @else if $max < 0 {
-    @media only screen and (min-width: $min) {
-      .hide-on-#{$prefix} { display: none !important; }
-    }
-    .hide-on-#{$prefix}-and-down { display: none !important; }
-    @media only screen and (min-width: $min) {
+      @media only screen and (min-width: $max + 1px) {
+        .only-on-#{$prefix} { display: none !important; }
+      }
+    } @else if $max < 0 {
+      @media (min-width: $min) {
+        .hide-on-#{$prefix} { display: none !important; }
+      }
       .hide-on-#{$prefix}-and-up { display: none !important; }
-    }
-    @media only screen and (max-width: $min - 1px) {
-      .only-on-#{$prefix} { display: none !important; }
-    }
-  } @else {
-    @media only screen and (min-width: $min) and (max-width: $max) {
-      .hide-on-#{$prefix} { display: none !important; }
-    }
-    @media only screen and (max-width: $max) {
       .hide-on-#{$prefix}-and-down { display: none !important; }
-    }
-    @media only screen and (min-width: $min) {
-      .hide-on-#{$prefix}-and-up { display: none !important; }
-    }
-    @media only screen and (max-width: $min - 1px), only screen and (min-width: $max + 1px) {
-      .only-on-#{$prefix} { display: none !important; }
+      @media only screen and (max-width: $min - 1px) {
+        .only-on-#{$prefix} { display: none !important; }
+      }
+    } @else {
+      @media only screen and (min-width: $min) and (max-width: $max) {
+        .hide-on-#{$prefix} { display: none !important; }
+      }
+      @media only screen and (max-width: $max) {
+        .hide-on-#{$prefix}-and-down { display: none !important; }
+      }
+      @media only screen and (min-width: $min) {
+        .hide-on-#{$prefix}-and-up { display: none !important; }
+      }
+      @media only screen and (max-width: $min - 1px), only screen and (min-width: $max + 1px) {
+        .only-on-#{$prefix} { display: none !important; }
+      }
     }
   }
 }
@@ -136,6 +134,25 @@ $sizes: (1,2,3,4);
       }
     }
   }
+  @each $type in $types {
+    @each $i in $sizes {
+      $size: $i * $gutter;
+      @each $dir in $directions {
+        @if($prefixed) {
+          .#{$prefix}-#{$type}-#{$i}-#{$dir} { #{$type}-#{$dir}: #{$size} !important; }
+        } @else {
+          .#{$type}-#{$i}-#{$dir} { #{$type}-#{$dir}: #{$size} !important; }
+        }
+      }
+    }
+  }
+  @if($prefixed) {
+    @each $type in $types {
+      @each $dir in $directions {
+        .#{$prefix}-no-#{$type}-#{$dir} { #{$type}-#{$dir}: 0 !important; }
+      }
+    }
+  }
 }
 
 $prevLandscape: 0 !default;
@@ -155,7 +172,7 @@ $prevPortrait: 0 !default;
     @include row($columns, $gutter);
     @include col-name($prefix, $columns, $gutter);
   }
-  //@include hide($min, $max, $prefix);
+  @include hide($min, $max, $prefix);
 }
 
 @each $type in $types {
