@@ -24,35 +24,48 @@ var sass = require("gulp-sass");
 var minifycss = require("gulp-minify-css");
 var postcss = require("gulp-postcss");
 var size = require("gulp-size");
-var rimraf = require('gulp-rimraf');
+var rimraf = require("gulp-rimraf");
 var sourcemaps = require("gulp-sourcemaps");
+var notify = require("gulp-notify");
+var cssnano = require('gulp-cssnano');
 
-var autoprefixer = require("autoprefixer");
+var postcssProcessors = [
+  require("autoprefixer")({ browsers: ["last 2 version"] }),
+  require("postcss-minify-selectors"),
+  require("postcss-unique-selectors"),
+  require("postcss-discard-duplicates"),
+  require("postcss-merge-rules"),
+  require("css-mqpacker")
+];
 
 var scss_source = "./src/*.scss";
 var scss_target = "./lib/css/";
 
 var css_target_files = scss_target + "*.css";
 
+
+gulp.task("breakpoints", function (done) {
+  require("./build.js")(done);
+});
+
 gulp.task("scss:clean", function () {
   return gulp.src(scss_target + "*.css", { read: false })
     .pipe(rimraf());
 });
 
-gulp.task("scss", ["scss:clean"], function () {
-  var preSize = size({ title: "before" });
-  var postSize = size({ title: "after" });
+gulp.task("scss", ["scss:clean", "breakpoints"], function () {
+  var preSize = size({ title: "before compression" });
+  var postSize = size({ title: "after compression" });
   gulp.src(scss_source)
     .pipe(sourcemaps.init())
     .pipe(sass().on("error", sass.logError))
     .pipe(preSize)
-    .pipe(postcss([autoprefixer({ browsers: ["last 2 version"] })]))
-    .pipe(minifycss({ compatibility: "ie8" }))
+    .pipe(cssnano())
     .pipe(postSize)
     .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest(scss_target));
 });
 
 gulp.task("build", ["scss"], function(){
-  
+
 });

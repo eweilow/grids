@@ -1,0 +1,56 @@
+//start variables
+$bp-xs-start-p: 0px !default; //xs size start in portrait
+$bp-s-start-p: 480px !default; //s size start in portrait
+$bp-m-start-p: 1024px !default; //m size start in portrait
+$bp-l-start-p: 1368px !default; //l size start in portrait
+$bp-xl-start-p: 2560px !default; //xl size start in portrait
+$bp-xs-start-l: 0px !default; //xs size start in landscape
+$bp-s-start-l: 320px !default; //s size start in landscape
+$bp-m-start-l: 480px !default; //m size start in landscape
+$bp-l-start-l: 1024px !default; //l size start in landscape
+$bp-xl-start-l: 1368px !default; //xl size start in landscape
+
+//end variables
+$bp-xs-end-p: $bp-s-start-p - 1px !default; //xs size start in portrait
+$bp-s-end-p: $bp-m-start-p - 1px !default; //s size start in portrait
+$bp-m-end-p: $bp-l-start-p - 1px !default; //m size start in portrait
+$bp-l-end-p: $bp-xl-start-p - 1px !default; //l size start in portrait
+$bp-xl-end-p: -1px !default; //xl size start in portrait
+$bp-xs-end-l: $bp-s-start-l - 1px !default; //xs size start in landscape
+$bp-s-end-l: $bp-m-start-l - 1px !default; //s size start in landscape
+$bp-m-end-l: $bp-l-start-l - 1px !default; //m size start in landscape
+$bp-l-end-l: $bp-xl-start-l - 1px !default; //l size start in landscape
+$bp-xl-end-l: -1px !default; //xl size start in landscape
+
+//breakpoints
+$breakpoints: (
+  ($bp-xs-start-p, $bp-xs-end-p, "xs", 4, 16px, "portrait", true),
+  ($bp-xs-start-l, $bp-xs-end-l, "xs", 4, 16px, "landscape", true),
+  ($bp-s-start-p, $bp-s-end-p, "s", 8, 24px, "portrait", true),
+  ($bp-s-start-l, $bp-s-end-l, "s", 8, 16px, "landscape", false),
+  ($bp-m-start-p, $bp-m-end-p, "m", 12, 24px, "portrait", false),
+  ($bp-m-start-l, $bp-m-end-l, "m", 12, 24px, "landscape", true),
+  ($bp-l-start-p, $bp-l-end-p, "l", 12, 24px, "portrait", false),
+  ($bp-l-start-l, $bp-l-end-l, "l", 12, 24px, "landscape", false),
+  ($bp-xl-start-p, $bp-xl-end-p, "xl", 12, 24px, "portrait", false),
+  ($bp-xl-start-l, $bp-xl-end-l, "xl", 12, 24px, "landscape", false)
+) !default;
+
+//media queries
+$xs-only: "screen and (max-width: #{$bp-xs-end-p}) and (orientation: portrait), screen and (max-width: #{$bp-xs-end-l}) and (orientation: landscape)" !default;
+$s-only: "screen and (min-width: #{$bp-s-start-p}) and (max-width: #{$bp-s-end-p}) and (orientation: portrait), screen and (min-width: #{$bp-s-start-l}) and (max-width: #{$bp-s-end-l}) and (orientation: landscape)" !default;
+$m-only: "screen and (min-width: #{$bp-m-start-p}) and (max-width: #{$bp-m-end-p}) and (orientation: portrait), screen and (min-width: #{$bp-m-start-l}) and (max-width: #{$bp-m-end-l}) and (orientation: landscape)" !default;
+$l-only: "screen and (min-width: #{$bp-l-start-p}) and (max-width: #{$bp-l-end-p}) and (orientation: portrait), screen and (min-width: #{$bp-l-start-l}) and (max-width: #{$bp-l-end-l}) and (orientation: landscape)" !default;
+$xl-only: "screen and (min-width: #{$bp-xl-start-p}) and (orientation: portrait), screen and (min-width: #{$bp-xl-start-l}) and (orientation: landscape)" !default;
+
+$xs-and-up: "screen and (min-width: #{$bp-xs-start-p}) and (orientation: portrait), screen and (min-width: #{$bp-xs-start-l}) and (orientation: landscape)" !default;
+$s-and-up: "screen and (min-width: #{$bp-s-start-p}) and (orientation: portrait), screen and (min-width: #{$bp-s-start-l}) and (orientation: landscape)" !default;
+$m-and-up: "screen and (min-width: #{$bp-m-start-p}) and (orientation: portrait), screen and (min-width: #{$bp-m-start-l}) and (orientation: landscape)" !default;
+$l-and-up: "screen and (min-width: #{$bp-l-start-p}) and (orientation: portrait), screen and (min-width: #{$bp-l-start-l}) and (orientation: landscape)" !default;
+$xl-and-up: "screen and (min-width: #{$bp-xl-start-p}) and (orientation: portrait), screen and (min-width: #{$bp-xl-start-l}) and (orientation: landscape)" !default;
+
+$xs-and-down: "screen and (max-width: #{$bp-xs-end-p}) and (orientation: portrait), screen and (max-width: #{$bp-xs-end-l}) and (orientation: landscape)" !default;
+$s-and-down: "screen and (max-width: #{$bp-s-end-p}) and (orientation: portrait), screen and (max-width: #{$bp-s-end-l}) and (orientation: landscape)" !default;
+$m-and-down: "screen and (max-width: #{$bp-m-end-p}) and (orientation: portrait), screen and (max-width: #{$bp-m-end-l}) and (orientation: landscape)" !default;
+$l-and-down: "screen and (max-width: #{$bp-l-end-p}) and (orientation: portrait), screen and (max-width: #{$bp-l-end-l}) and (orientation: landscape)" !default;
+$xl-and-down: "screen and (max-width: #{$bp-xl-end-p}) and (orientation: portrait), screen and (max-width: #{$bp-xl-end-l}) and (orientation: landscape)" !default;

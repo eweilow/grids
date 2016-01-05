@@ -1,0 +1,21 @@
+{
+  "breakpointOrder": [
+    "xs", "s", "m", "l", "xl"
+  ],
+  "breakpoints": {
+    "portrait": {
+      "xs": { "from": "prev", "to": "next", "cols": 4, "gutter": 16 },
+      "s": { "from": 480, "to": "next", "cols": 8, "gutter": 24 },
+      "m": { "from": 1024, "to": "next", "cols": 12, "gutter": 24 },
+      "l": { "from": 1368, "to": "next", "cols": 12, "gutter": 24 },
+      "xl": { "from": 2560, "to": "next", "cols": 12, "gutter": 24 }
+    },
+    "landscape": {
+      "xs": { "from": "prev", "to": "next", "cols": 4, "gutter": 16 },
+      "s": { "from": 320, "to": "next", "cols": 8, "gutter": 16 },
+      "m": { "from": 480, "to": "next", "cols": 12, "gutter": 24 },
+      "l": { "from": 1024, "to": "next", "cols": 12, "gutter": 24 },
+      "xl": { "from": 1368, "to": "next", "cols": 12, "gutter": 24 }
+    }
+  }
+}
