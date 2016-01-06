@@ -67,6 +67,9 @@
   .row {
     margin-left: (-1 * $gutter / 2);
     margin-right: (-1 * $gutter / 2);
+    padding: 0;
+  }
+  .row.with-gutter {
     padding: 0 $gutter / 2;
   }
   .row.primary, .primary-row {
