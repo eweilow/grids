@@ -19,8 +19,6 @@
 @import "_breakpointsBuild.scss";
 
 .row {
-  float: left;
-
   &:after {
     content: "";
     display: table;
@@ -32,7 +30,6 @@
 }
 
 .col {
-  float: left;
   box-sizing: border-box;
 
   margin: 0;
